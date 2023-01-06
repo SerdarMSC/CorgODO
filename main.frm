@@ -190,11 +190,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Form_Load()
 Dim dosya As String
-    Label2.Caption = "Gösterge tipi"
-    Label1.Caption = "Program hazýr..."
+    Label2.Caption = "GÃ¶sterge tipi"
+    Label1.Caption = "Program hazir..."
 End Sub
+
 Private Sub Command1_Click()
 Dim xfile
 Dim yazilacakKM, yazilacakKMHEX, boy
@@ -204,7 +206,7 @@ Dim d3 As Byte
 Dim d4 As Byte
 
 If Text9.Text = "KM bilgisi giriniz" Or Text9.Text = "" Then
-    MsgBox ("Lütfen kilometre bilgisi giriniz...")
+    MsgBox ("LÃ¼tfen kilometre bilgisi giriniz...")
 Else
     If Left(Label2.Caption, 2) = "v2" Then
         yazilacakKM = (Hex(Round(Text9.Text / 8, 0)))
@@ -240,11 +242,11 @@ Else
             Close #2
         Next i
         
-        Label1.Caption = "Ýþlem baþarýlý..."
-        Label2.Caption = "v2 tipi gösterge yazýldý."
+        Label1.Caption = "Islem basarili..."
+        Label2.Caption = "v2 tipi gÃ¶sterge yazildi."
         Label2.BackColor = &H0&
         Label1.BackColor = &HFF00&
-        MsgBox ("Yeni kilometre bilgisi v2 tip göstergeye baþarýyla yazýldý...")
+        MsgBox ("Yeni kilometre bilgisi v2 tip gÃ¶stergeye basariyla yazildi...")
     
         ElseIf Left(Label2.Caption, 2) = "v1" Then
         xfile = CommonDialog1.FileName & ".mod"
@@ -272,11 +274,11 @@ Else
             v1KMyaz xfile, 97, checksumliKM(Text9.Text - 6) ' 9. Blok
         End If
 
-        Label1.Caption = "Ýþlem baþarýlý..."
-        Label2.Caption = "v1 tipi gösterge yazýldý."
+        Label1.Caption = "Islem basarili..."
+        Label2.Caption = "v1 tipi gÃ¶sterge yazildi."
         Label2.BackColor = &H0&
         Label1.BackColor = &HFF00&
-        MsgBox ("Yeni kilometre bilgisi v1 tip göstergeye baþarýyla yazýldý...")
+        MsgBox ("Yeni kilometre bilgisi v1 tip gÃ¶stergeye basariyla yazildi...")
 
     End If
 
@@ -291,14 +293,14 @@ Dim ssByte3 As Byte
 Dim ssByte4 As Byte
 Dim km As String
 
-CommonDialog1.Filter = "Eprom Dosyasý (*.bin) yada (*.hex)"
+CommonDialog1.Filter = "Eprom DosyasÃ½ (*.bin) yada (*.hex)"
 CommonDialog1.DefaultExt = "bin"
-CommonDialog1.DialogTitle = "Okunan dosyayý seçiniz"
+CommonDialog1.DialogTitle = "Okunan dosyayi seÃ§iniz"
 CommonDialog1.ShowOpen
 
 sfile = CommonDialog1.FileName
-    If FileLen(sfile) = 8192 Then '24c64 dosyasý boyutu
-        Label2.Caption = "v2 tipi göstergeden veri okundu."
+    If FileLen(sfile) = 8192 Then '24c64 dosyasÃ½ boyutu
+        Label2.Caption = "v2 tipi gÃ¶stergeden veri okundu."
         Label2.BackColor = &HFF00&
         Open sfile For Binary As #1
         Get #1, 5, ssByte1
@@ -316,10 +318,10 @@ sfile = CommonDialog1.FileName
         Text8.Text = hexlookup(Text4.Text)
         km = Text8.Text & Text7.Text & Text6.Text & Text5.Text
         Label1.Visible = True
-        Label1.Caption = "Araç " & FormatNumber(hex2dec(km) * 8, 0) & " kilometrededir."
+        Label1.Caption = "AraÃ§ " & FormatNumber(hex2dec(km) * 8, 0) & " kilometrededir."
         Text9.Text = FormatNumber(hex2dec(km) * 8, 0)
-    ElseIf FileLen(sfile) = 512 Then '24c64 dosyasý boyutu
-        Label2.Caption = "v1 tipi göstergeden veri okundu."
+    ElseIf FileLen(sfile) = 512 Then '24c64 dosyasÃ½ boyutu
+        Label2.Caption = "v1 tipi gÃ¶stergeden veri okundu."
         Label2.BackColor = &HFF00&
         Open sfile For Binary As #1
         Get #1, 73, ssByte1
@@ -345,7 +347,7 @@ sfile = CommonDialog1.FileName
         End If
         km = Text1.Text & Text2.Text & Text3.Text & Text4.Text
         Label1.Visible = True
-        Label1.Caption = "Araç " & FormatNumber(hex2dec(km), 0) & " kilometrededir."
+        Label1.Caption = "AraÃ§ " & FormatNumber(hex2dec(km), 0) & " kilometrededir."
         Text9.Text = FormatNumber(hex2dec(km), 0)
         Else
         MsgBox ("Bilinmeyen dosya...")
@@ -353,15 +355,18 @@ sfile = CommonDialog1.FileName
     End If
 
 End Sub
+
 Public Function hex2dec(h)
 Dim l As Long: l = Len(h)
+
 If l < 16 Then
-hex2dec = CDec("&h0" & h)
+   hex2dec = CDec("&h0" & h)
 If hex2dec < 0 Then hex2dec = hex2dec + 4294967296#
 ElseIf l < 25 Then
-hex2dec = hex2dec(Left$(h, l - 9)) * 68719476736# + CDec("&h" & Right$(h, 9))
+   hex2dec = hex2dec(Left$(h, l - 9)) * 68719476736# + CDec("&h" & Right$(h, 9))
 End If
 End Function
+
 Public Function checksumliKM(KilometreCRC As Variant) As String
 Dim crc1, crc2, crc3, crc4 As Variant
 Dim HesapBoy, HesapKM, HesapKMHEX As Variant
@@ -390,8 +395,8 @@ crc3 = hexlookup(Right(Left(HesapKMHEX, 6), 2))
 crc4 = hexlookup(Right(HesapKMHEX, 2))
 
 checksumliKM = HesapKMHEX + crc1 + crc2 + crc3 + crc4
-
 End Function
+
 Public Function v1KMyaz(dosya, adres, data As Variant)
 Dim tempd As Byte
     Open dosya For Binary As #3
@@ -401,7 +406,6 @@ Dim tempd As Byte
     Next dongu
     Close #3
 End Function
-
 
 Public Function hexlookup(hl As Variant) As String
 Dim one As Variant
@@ -418,75 +422,74 @@ two = Right(hl, 1)
 End If
 
 If one = 0 Then
-oneHL = "F"
+   oneHL = "F"
 ElseIf one = 1 Then
-oneHL = "E"
+   oneHL = "E"
 ElseIf one = 2 Then
-oneHL = "D"
+   oneHL = "D"
 ElseIf one = 3 Then
-oneHL = "C"
+   oneHL = "C"
 ElseIf one = 4 Then
-oneHL = "B"
+   oneHL = "B"
 ElseIf one = 5 Then
-oneHL = "A"
+   oneHL = "A"
 ElseIf one = 6 Then
-oneHL = 9
+   oneHL = 9
 ElseIf one = 7 Then
-oneHL = 8
+   oneHL = 8
 ElseIf one = 8 Then
-oneHL = 7
+   oneHL = 7
 ElseIf one = 9 Then
-oneHL = 6
+   oneHL = 6
 ElseIf one = "A" Then
-oneHL = 5
+   oneHL = 5
 ElseIf one = "B" Then
-oneHL = 4
+   oneHL = 4
 ElseIf one = "C" Then
-oneHL = 3
+   oneHL = 3
 ElseIf one = "D" Then
-oneHL = 2
+   oneHL = 2
 ElseIf one = "E" Then
-oneHL = 1
+   oneHL = 1
 ElseIf one = "F" Then
-oneHL = 0
+   oneHL = 0
 End If
 
 If two = 0 Then
-twoHL = "F"
+   twoHL = "F"
 ElseIf two = 1 Then
-twoHL = "E"
+   twoHL = "E"
 ElseIf two = 2 Then
-twoHL = "D"
+   twoHL = "D"
 ElseIf two = 3 Then
-twoHL = "C"
+   twoHL = "C"
 ElseIf two = 4 Then
-twoHL = "B"
+   twoHL = "B"
 ElseIf two = 5 Then
-twoHL = "A"
+   twoHL = "A"
 ElseIf two = 6 Then
-twoHL = 9
+   twoHL = 9
 ElseIf two = 7 Then
-twoHL = 8
+   twoHL = 8
 ElseIf two = 8 Then
-twoHL = 7
+   twoHL = 7
 ElseIf two = 9 Then
-twoHL = 6
+   twoHL = 6
 ElseIf two = "A" Then
-twoHL = 5
+   twoHL = 5
 ElseIf two = "B" Then
-twoHL = 4
+   twoHL = 4
 ElseIf two = "C" Then
-twoHL = 3
+   twoHL = 3
 ElseIf two = "D" Then
-twoHL = 2
+   twoHL = 2
 ElseIf two = "E" Then
-twoHL = 1
+   twoHL = 1
 ElseIf two = "F" Then
-twoHL = 0
+   twoHL = 0
 End If
 
 hexlookup = oneHL & twoHL
-
 End Function
 
 Private Sub Image1_Click()
